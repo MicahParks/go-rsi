@@ -8,7 +8,7 @@ type Input struct {
 
 // TODO
 type RSI struct {
-	periods  uint
+	periods  float64
 	previous Input
 }
 
@@ -19,19 +19,19 @@ func New(periods uint, initial Input) (initialValue float64, r *RSI) {
 	}
 
 	r = &RSI{
-		periods:  periods,
+		periods:  float64(periods),
 		previous: initial,
 	}
 
-	initialValue = 100 - (100 / (1 + ((r.previous.AverageGain / float64(r.periods)) / (r.previous.AverageLoss / float64(r.periods)))))
+	initialValue = 100 - (100 / (1 + ((r.previous.AverageGain / r.periods) / (r.previous.AverageLoss / r.periods))))
 
 	return initialValue, r
 }
 
 // TODO
 func (r *RSI) Calculate(i Input) (value float64) {
-	r.previous.AverageGain = (r.previous.AverageGain*float64(r.periods-1) + i.AverageGain) / float64(r.periods)
-	r.previous.AverageLoss = (r.previous.AverageLoss*float64(r.periods-1) + i.AverageLoss) / float64(r.periods)
+	r.previous.AverageGain = (r.previous.AverageGain*(r.periods-1) + i.AverageGain) / r.periods
+	r.previous.AverageLoss = (r.previous.AverageLoss*(r.periods-1) + i.AverageLoss) / r.periods
 
 	value = 100 - 100/(1+r.previous.AverageGain/r.previous.AverageLoss)
 

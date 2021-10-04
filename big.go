@@ -12,28 +12,29 @@ type BigInput struct {
 
 // TODO
 type BigRSI struct {
-	periods  uint
+	periods  *big.Float
 	previous BigInput
 }
 
 // TODO
-func NewBig(periods uint, initial BigInput) (initialValue float64, r *BigRSI) {
+func NewBig(periods uint, initial BigInput) (initialValue *big.Float, r *BigRSI) {
 	if periods == 0 {
 		periods = 14
 	}
 
 	r = &BigRSI{
-		periods:  periods,
+		periods:  big.NewFloat(float64(periods)),
 		previous: initial,
 	}
 
-	initialValue = 100 - (100 / (1 + ((r.previous.AverageGain / float64(r.periods)) / (r.previous.AverageLoss / float64(r.periods)))))
+	initialValue = new(big.Float).Sub(big.NewFloat(100), new(big.Float).Quo(big.NewFloat(100), new(big.Float).Add(big.NewFloat(1), new(big.Float).Quo(new(big.Float).Quo(r.previous.AverageGain, r.periods), new(big.Float).Quo(r.previous.AverageLoss, r.periods)))))
 
 	return initialValue, r
 }
 
 // TODO
-func (r *BigRSI) Calculate(i Input) (value float64) {
+func (r *BigRSI) Calculate(i BigInput) (value float64) {
+	new(big.Float).Mul(new(big.Float), r.previous.AverageGain)
 	r.previous.AverageGain = (r.previous.AverageGain*float64(r.periods-1) + i.AverageGain) / float64(r.periods)
 	r.previous.AverageLoss = (r.previous.AverageLoss*float64(r.periods-1) + i.AverageLoss) / float64(r.periods)
 
