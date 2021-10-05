@@ -53,6 +53,9 @@ for i := periods; i < len(avgGains); i++ {
 }
 ```
 
+# Full example
+See the `examples` directory for a full example.
+
 # Testing
 There is 100% test coverage and benchmarks for this project. Here is an example benchmark result:
 ```
