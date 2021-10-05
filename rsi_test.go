@@ -15,7 +15,7 @@ func BenchmarkBigRSI_Calculate(b *testing.B) {
 	avgGain := avg(fGains[0:rsi.DefaultPeriods])
 	avgLoss := avg(fLosses[0:rsi.DefaultPeriods])
 
-	_, r := rsi.NewBig(rsi.DefaultPeriods, rsi.BigInput{
+	_, r := rsi.NewBig(0, rsi.BigInput{
 		AverageGain: big.NewFloat(avgGain),
 		AverageLoss: big.NewFloat(avgLoss),
 	})
@@ -36,7 +36,7 @@ func BenchmarkRSI_Calculate(b *testing.B) {
 	avgGain := avg(gains[0:rsi.DefaultPeriods])
 	avgLoss := avg(losses[0:rsi.DefaultPeriods])
 
-	_, r := rsi.New(rsi.DefaultPeriods, rsi.Input{
+	_, r := rsi.New(0, rsi.Input{
 		AverageGain: avgGain,
 		AverageLoss: avgLoss,
 	})
