@@ -1,3 +1,4 @@
+[![Go Reference](https://pkg.go.dev/badge/github.com/MicahParks/go-rsi.svg)](https://pkg.go.dev/github.com/MicahParks/go-rsi) [![Go Report Card](https://goreportcard.com/badge/github.com/MicahParks/go-rsi)](https://goreportcard.com/report/github.com/MicahParks/go-rsi)
 # go-rsi
 The Relative Strength Index (RSI) algorithm implemented in Golang.
 
