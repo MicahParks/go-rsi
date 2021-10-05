@@ -1,6 +1,6 @@
 package rsi
 
-// DefaultPeriods is the default number of periods for the RSI algorithm.
+// DefaultPeriods is the default number of periods for the averages for the RSI algorithm.
 const DefaultPeriods = 14
 
 // Input represents the averages for a period that are inputted into the RSI algorithm.
@@ -17,7 +17,7 @@ type RSI struct {
 }
 
 // New creates a new RSI data structure and returns the initial value.
-func New(periods uint, initial Input) (initialValue float64, r *RSI) {
+func New(periods uint, initial Input) (r *RSI, initialValue float64) {
 	if periods == 0 {
 		periods = DefaultPeriods
 	}
@@ -30,7 +30,7 @@ func New(periods uint, initial Input) (initialValue float64, r *RSI) {
 
 	initialValue = 100 - (100 / (1 + ((r.previous.AverageGain / r.periods) / (r.previous.AverageLoss / r.periods))))
 
-	return initialValue, r
+	return r, initialValue
 }
 
 // Calculate produces the next RSI value given the next input.

@@ -23,7 +23,7 @@ type BigRSI struct {
 }
 
 // NewBig creates a new RSI data structure and returns the initial value.
-func NewBig(periods uint, initial BigInput) (initialValue *big.Float, r *BigRSI) {
+func NewBig(periods uint, initial BigInput) (r *BigRSI, initialValue *big.Float) {
 	if periods == 0 {
 		periods = DefaultPeriods
 	}
@@ -36,7 +36,7 @@ func NewBig(periods uint, initial BigInput) (initialValue *big.Float, r *BigRSI)
 
 	initialValue = new(big.Float).Sub(big100, new(big.Float).Quo(big100, new(big.Float).Add(big1, new(big.Float).Quo(new(big.Float).Quo(r.previous.AverageGain, r.periods), new(big.Float).Quo(r.previous.AverageLoss, r.periods)))))
 
-	return initialValue, r
+	return r, initialValue
 }
 
 // Calculate produces the next RSI value given the next input.
