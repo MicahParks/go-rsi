@@ -58,7 +58,13 @@ See the `examples` directory for a full example.
 # Testing
 There is 100% test coverage and benchmarks for this project. Here is an example benchmark result:
 ```
-$ go test -bench . goos: linux goarch: amd64 pkg: github.com/MicahParks/go-rsi cpu: Intel(R) Core(TM) i5-9600K CPU @
-3.70GHz BenchmarkBigRSI_Calculate-6 1000000000 0.0001172 ns/op BenchmarkRSI_Calculate-6 1000000000 0.0000058 ns/op PASS
-ok github.com/MicahParks/go-rsi 0.004s
+$ go test -bench .
+goos: linux
+goarch: amd64
+pkg: github.com/MicahParks/go-rsi
+cpu: Intel(R) Core(TM) i5-9600K CPU @ 3.70GHz
+BenchmarkBigRSI_Calculate-6     1000000000               0.0001280 ns/op
+BenchmarkRSI_Calculate-6        1000000000               0.0000019 ns/op
+PASS
+ok      github.com/MicahParks/go-rsi    0.005s
 ```
