@@ -4,41 +4,47 @@ import (
 	"math/big"
 )
 
-// TODO
+var (
+	big1   = big.NewFloat(1)
+	big100 = big.NewFloat(100)
+)
+
+// BigInput represents the averages for a period that are inputted into the RSI algorithm.
 type BigInput struct {
 	AverageGain *big.Float
 	AverageLoss *big.Float
 }
 
-// TODO
+// BigRSI represents the state of a Relative Strength Index (RSI) algorithm.
 type BigRSI struct {
-	periods  *big.Float
-	previous BigInput
+	periods       *big.Float
+	periodsMinus1 *big.Float
+	previous      BigInput
 }
 
-// TODO
+// NewBig creates a new RSI data structure and returns the initial value.
 func NewBig(periods uint, initial BigInput) (initialValue *big.Float, r *BigRSI) {
 	if periods == 0 {
-		periods = 14
+		periods = DefaultPeriods
 	}
 
 	r = &BigRSI{
 		periods:  big.NewFloat(float64(periods)),
 		previous: initial,
 	}
+	r.periodsMinus1 = new(big.Float).Sub(r.periods, big1)
 
-	initialValue = new(big.Float).Sub(big.NewFloat(100), new(big.Float).Quo(big.NewFloat(100), new(big.Float).Add(big.NewFloat(1), new(big.Float).Quo(new(big.Float).Quo(r.previous.AverageGain, r.periods), new(big.Float).Quo(r.previous.AverageLoss, r.periods)))))
+	initialValue = new(big.Float).Sub(big100, new(big.Float).Quo(big100, new(big.Float).Add(big1, new(big.Float).Quo(new(big.Float).Quo(r.previous.AverageGain, r.periods), new(big.Float).Quo(r.previous.AverageLoss, r.periods)))))
 
 	return initialValue, r
 }
 
-// TODO
-func (r *BigRSI) Calculate(i BigInput) (value float64) {
-	new(big.Float).Mul(new(big.Float), r.previous.AverageGain)
-	r.previous.AverageGain = (r.previous.AverageGain*float64(r.periods-1) + i.AverageGain) / float64(r.periods)
-	r.previous.AverageLoss = (r.previous.AverageLoss*float64(r.periods-1) + i.AverageLoss) / float64(r.periods)
+// Calculate produces the next RSI value given the next input.
+func (r *BigRSI) Calculate(i BigInput) (value *big.Float) {
+	r.previous.AverageGain = new(big.Float).Quo(new(big.Float).Add(new(big.Float).Mul(r.previous.AverageGain, r.periodsMinus1), i.AverageGain), r.periods)
+	r.previous.AverageLoss = new(big.Float).Quo(new(big.Float).Add(new(big.Float).Mul(r.previous.AverageLoss, r.periodsMinus1), i.AverageLoss), r.periods)
 
-	value = 100 - 100/(1+r.previous.AverageGain/r.previous.AverageLoss)
+	value = new(big.Float).Sub(big100, new(big.Float).Quo(big100, new(big.Float).Add(big1, new(big.Float).Quo(r.previous.AverageGain, r.previous.AverageLoss))))
 
 	return value
 }

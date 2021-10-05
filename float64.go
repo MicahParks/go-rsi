@@ -1,26 +1,31 @@
 package rsi
 
-// TODO
+// DefaultPeriods is the default number of periods for the RSI algorithm.
+const DefaultPeriods = 14
+
+// Input represents the averages for a period that are inputted into the RSI algorithm.
 type Input struct {
 	AverageGain float64
 	AverageLoss float64
 }
 
-// TODO
+// RSI represents the state of a Relative Strength Index (RSI) algorithm.
 type RSI struct {
-	periods  float64
-	previous Input
+	periods         float64
+	periodsMinusOne float64
+	previous        Input
 }
 
-// TODO
+// New creates a new RSI data structure and returns the initial value.
 func New(periods uint, initial Input) (initialValue float64, r *RSI) {
 	if periods == 0 {
-		periods = 14
+		periods = DefaultPeriods
 	}
 
 	r = &RSI{
-		periods:  float64(periods),
-		previous: initial,
+		periods:         float64(periods),
+		periodsMinusOne: float64(periods - 1),
+		previous:        initial,
 	}
 
 	initialValue = 100 - (100 / (1 + ((r.previous.AverageGain / r.periods) / (r.previous.AverageLoss / r.periods))))
@@ -28,10 +33,10 @@ func New(periods uint, initial Input) (initialValue float64, r *RSI) {
 	return initialValue, r
 }
 
-// TODO
+// Calculate produces the next RSI value given the next input.
 func (r *RSI) Calculate(i Input) (value float64) {
-	r.previous.AverageGain = (r.previous.AverageGain*(r.periods-1) + i.AverageGain) / r.periods
-	r.previous.AverageLoss = (r.previous.AverageLoss*(r.periods-1) + i.AverageLoss) / r.periods
+	r.previous.AverageGain = (r.previous.AverageGain*(r.periodsMinusOne) + i.AverageGain) / r.periods
+	r.previous.AverageLoss = (r.previous.AverageLoss*(r.periodsMinusOne) + i.AverageLoss) / r.periods
 
 	value = 100 - 100/(1+r.previous.AverageGain/r.previous.AverageLoss)
 
