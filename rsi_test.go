@@ -77,7 +77,7 @@ func ExampleRSI_Calculate() {
 	//
 	// If the first argument, the initial periods is 0, the default value, 14, will be used.
 	r, result := rsi.New(uint(periods), initialInput)
-	logger.Printf("Data index: %d\nAverage gain: %.2f\nAverage loss: %.2f\nRSI: %.2f", periods-1, avgGain, avgLoss, result)
+	logger.Printf("Period index: %d\nAverage gain: %.2f\nAverage loss: %.2f\nRSI: %.2f", periods-1, avgGain, avgLoss, result)
 
 	// Use the remaining data to generate the RSI for each period.
 	for i := periods; i < len(avgGains); i++ {
@@ -88,12 +88,12 @@ func ExampleRSI_Calculate() {
 			AverageLoss: avgLoss,
 		})
 	}
-	logger.Printf("Data index: %d\nAverage gain: %.2f\nAverage loss: %.2f\nRSI: %.2f", len(avgGains)-1, avgGain, avgLoss, result)
-	// Output: Data index: 13
+	logger.Printf("Period index: %d\nAverage gain: %.2f\nAverage loss: %.2f\nRSI: %.2f", len(avgGains)-1, avgGain, avgLoss, result)
+	// Output: Period index: 13
 	// Average gain: -0.11
 	// Average loss: -0.11
 	// RSI: 50.37
-	// Data index: 99
+	// Period index: 99
 	// Average gain: 0.35
 	// Average loss: 0.00
 	// RSI: 271.62
