@@ -35,7 +35,6 @@ Create the RSI data structure and get the first result.
 //
 // If the first argument, the initial periods is 0, the default value, 14, will be used.
 r, result := rsi.New(uint(periods), initialInput)
-logger.Printf("Period index: %d\n  Average gain: %.2f\n  Average loss: %.2f\n RSI: %.2f", periods-1, avgGain, avgLoss, result)
 ```
 
 ## Step 3
@@ -49,7 +48,6 @@ for i := periods; i < len(avgGains); i++ {
 		AverageGain: avgGain,
 		AverageLoss: avgLoss,
 	})
-	logger.Printf("Period index: %d\n  Average gain: %.2f\n  Average loss: %.2f\n RSI: %.2f", i, avgGain, avgLoss, result)
 }
 ```
 
