@@ -31,7 +31,7 @@ func main() {
 	//
 	// If the first argument, the initial periods is 0, the default value, 14, will be used.
 	r, result := rsi.New(uint(periods), initialInput)
-	logger.Printf("Data index: %d\n  Average gain: %.2f\n  Average loss: %.2f\n RSI: %.2f", periods-1, avgGain, avgLoss, result)
+	logger.Printf("Data index: %d\nAverage gain: %.2f\nAverage loss: %.2f\nRSI: %.2f", periods-1, avgGain, avgLoss, result)
 
 	// Use the remaining data to generate the RSI for each period.
 	for i := periods; i < len(avgGains); i++ {
@@ -41,8 +41,8 @@ func main() {
 			AverageGain: avgGain,
 			AverageLoss: avgLoss,
 		})
-		logger.Printf("Data index: %d\n  Average gain: %.2f\n  Average loss: %.2f\n RSI: %.2f", i, avgGain, avgLoss, result)
 	}
+	logger.Printf("Data index: %d\nAverage gain: %.2f\nAverage loss: %.2f\nRSI: %.2f", len(avgGains)-1, avgGain, avgLoss, result)
 }
 
 func avg(s []float64) (avg float64) {
