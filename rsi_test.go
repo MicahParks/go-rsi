@@ -1,8 +1,6 @@
 package rsi_test
 
 import (
-	"fmt"
-	"log"
 	"math/big"
 	"testing"
 
@@ -14,16 +12,62 @@ func BenchmarkBigRSI_Calculate(b *testing.B) {
 	gains := floatToBig(fGains)
 	losses := floatToBig(fLosses)
 
-	avgGain := avg(fLosses[0:rsi.DefaultPeriods])
+	avgGain := avg(fGains[0:rsi.DefaultPeriods])
 	avgLoss := avg(fLosses[0:rsi.DefaultPeriods])
 
-	result, r := rsi.NewBig(rsi.DefaultPeriods, rsi.BigInput{
+	_, r := rsi.NewBig(rsi.DefaultPeriods, rsi.BigInput{
+		AverageGain: big.NewFloat(avgGain),
+		AverageLoss: big.NewFloat(avgLoss),
+	})
+
+	for i := rsi.DefaultPeriods; i < len(gains); i++ {
+		avgGain, _ = gains[i].Float64()
+		avgLoss, _ = losses[i].Float64()
+		_ = r.Calculate(rsi.BigInput{
+			AverageGain: big.NewFloat(avgGain),
+			AverageLoss: big.NewFloat(avgLoss),
+		})
+	}
+}
+
+func BenchmarkRSI_Calculate(b *testing.B) {
+	gains, losses, _ := testData()
+
+	avgGain := avg(gains[0:rsi.DefaultPeriods])
+	avgLoss := avg(losses[0:rsi.DefaultPeriods])
+
+	_, r := rsi.New(rsi.DefaultPeriods, rsi.Input{
+		AverageGain: avgGain,
+		AverageLoss: avgLoss,
+	})
+
+	for i := rsi.DefaultPeriods; i < len(gains); i++ {
+		avgGain = gains[i]
+		avgLoss = losses[i]
+		_ = r.Calculate(rsi.Input{
+			AverageGain: avgGain,
+			AverageLoss: avgLoss,
+		})
+	}
+}
+
+func TestBigRSI_Calculate(t *testing.T) {
+	fGains, fLosses, results := testData()
+	gains := floatToBig(fGains)
+	losses := floatToBig(fLosses)
+
+	avgGain := avg(fGains[0:rsi.DefaultPeriods])
+	avgLoss := avg(fLosses[0:rsi.DefaultPeriods])
+
+	result, r := rsi.NewBig(0, rsi.BigInput{
 		AverageGain: big.NewFloat(avgGain),
 		AverageLoss: big.NewFloat(avgLoss),
 	})
 
 	res, _ := result.Float64()
-	log.Println(fmt.Sprintf("Starting:\n  Gains: %.2f\n  Losses: %.2f\n  RSI: %.2f", avgGain, avgLoss, res))
+	if res != results[0] {
+		t.FailNow()
+	}
 
 	for i := rsi.DefaultPeriods; i < len(gains); i++ {
 		avgGain, _ = gains[i].Float64()
@@ -33,22 +77,24 @@ func BenchmarkBigRSI_Calculate(b *testing.B) {
 			AverageLoss: big.NewFloat(avgLoss),
 		})
 		res, _ = result.Float64()
-		log.Println(fmt.Sprintf("Starting:\n  Gains: %.2f\n  Losses: %.2f\n  RSI: %.2f", avgGain, avgLoss, res))
+		if res != results[i-rsi.DefaultPeriods+1] {
+			t.FailNow()
+		}
 	}
 }
 
-func BenchmarkRSI_Calculate(b *testing.B) {
+func TestRSI_Calculate(t *testing.T) {
 	gains, losses, results := testData()
 
 	avgGain := avg(gains[0:rsi.DefaultPeriods])
 	avgLoss := avg(losses[0:rsi.DefaultPeriods])
 
-	result, r := rsi.New(rsi.DefaultPeriods, rsi.Input{
+	result, r := rsi.New(0, rsi.Input{
 		AverageGain: avgGain,
 		AverageLoss: avgLoss,
 	})
 	if results[0] != result {
-		b.FailNow()
+		t.FailNow()
 	}
 
 	for i := rsi.DefaultPeriods; i < len(gains); i++ {
@@ -59,7 +105,7 @@ func BenchmarkRSI_Calculate(b *testing.B) {
 			AverageLoss: avgLoss,
 		})
 		if results[i-rsi.DefaultPeriods+1] != result {
-			b.FailNow()
+			t.FailNow()
 		}
 	}
 }
