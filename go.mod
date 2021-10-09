@@ -1,3 +1,3 @@
 module github.com/MicahParks/go-rsi
 
-go 1.11
+go 1.13
