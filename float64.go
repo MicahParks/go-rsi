@@ -17,7 +17,7 @@ type RSI struct {
 }
 
 // New creates a new RSI data structure and returns the initial value.
-func New(periods uint, initial Input) (r *RSI, initialValue float64) {
+func New(periods uint, initial Input) (r *RSI, result float64) {
 	if periods == 0 {
 		periods = DefaultPeriods
 	}
@@ -28,17 +28,17 @@ func New(periods uint, initial Input) (r *RSI, initialValue float64) {
 		previous:        initial,
 	}
 
-	initialValue = 100 - (100 / (1 + ((r.previous.AverageGain / r.periods) / (r.previous.AverageLoss / r.periods))))
+	result = 100 - (100 / (1 + ((r.previous.AverageGain / r.periods) / (r.previous.AverageLoss / r.periods))))
 
-	return r, initialValue
+	return r, result
 }
 
 // Calculate produces the next RSI value given the next input.
-func (r *RSI) Calculate(i Input) (value float64) {
-	r.previous.AverageGain = (r.previous.AverageGain*(r.periodsMinusOne) + i.AverageGain) / r.periods
-	r.previous.AverageLoss = (r.previous.AverageLoss*(r.periodsMinusOne) + i.AverageLoss) / r.periods
+func (r *RSI) Calculate(next Input) (result float64) {
+	r.previous.AverageGain = (r.previous.AverageGain*(r.periodsMinusOne) + next.AverageGain) / r.periods
+	r.previous.AverageLoss = (r.previous.AverageLoss*(r.periodsMinusOne) + next.AverageLoss) / r.periods
 
-	value = 100 - 100/(1+r.previous.AverageGain/r.previous.AverageLoss)
+	result = 100 - 100/(1+r.previous.AverageGain/r.previous.AverageLoss)
 
-	return value
+	return result
 }
