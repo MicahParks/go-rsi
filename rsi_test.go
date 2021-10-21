@@ -10,21 +10,17 @@ import (
 )
 
 func BenchmarkBigRSI_Calculate(b *testing.B) {
-	fAvgGains, fAvgLosses, _ := testData()
-	avgGains := floatToBig(fAvgGains)
-	avgLosses := floatToBig(fAvgLosses)
-
-	avgGain := avg(fAvgGains[0:rsi.DefaultPeriods])
-	avgLoss := avg(fAvgLosses[0:rsi.DefaultPeriods])
+	avgGain := avg(avgGains[0:rsi.DefaultPeriods])
+	avgLoss := avg(avgLosses[0:rsi.DefaultPeriods])
 
 	r, _ := rsi.NewBig(0, rsi.BigInput{
 		AverageGain: big.NewFloat(avgGain),
 		AverageLoss: big.NewFloat(avgLoss),
 	})
 
-	for i := rsi.DefaultPeriods; i < len(avgGains); i++ {
-		avgGain, _ = avgGains[i].Float64()
-		avgLoss, _ = avgLosses[i].Float64()
+	for i := rsi.DefaultPeriods; i < len(bigAvgGains); i++ {
+		avgGain, _ = bigAvgGains[i].Float64()
+		avgLoss, _ = bigAvgLosses[i].Float64()
 		_ = r.Calculate(rsi.BigInput{
 			AverageGain: big.NewFloat(avgGain),
 			AverageLoss: big.NewFloat(avgLoss),
@@ -33,8 +29,6 @@ func BenchmarkBigRSI_Calculate(b *testing.B) {
 }
 
 func BenchmarkRSI_Calculate(b *testing.B) {
-	avgGains, avgLosses, _ := testData()
-
 	avgGain := avg(avgGains[0:rsi.DefaultPeriods])
 	avgLoss := avg(avgLosses[0:rsi.DefaultPeriods])
 
@@ -60,7 +54,7 @@ func ExampleRSI_Calculate() {
 	// Gather some data.
 	//
 	// For production systems, it'd be best to gather test data asynchronously.
-	avgGains, avgLosses, _ := testData()
+	avgGains, avgLosses = avgGains, avgLosses
 
 	// Determine the number of periods for the initial inputs. Defaults to 14.
 	periods := rsi.DefaultPeriods
@@ -100,12 +94,8 @@ func ExampleRSI_Calculate() {
 }
 
 func TestBigRSI_Calculate(t *testing.T) {
-	fAvgGains, fAvgLosses, results := testData()
-	avgGains := floatToBig(fAvgGains)
-	avgLosses := floatToBig(fAvgLosses)
-
-	avgGain := avg(fAvgGains[0:rsi.DefaultPeriods])
-	avgLoss := avg(fAvgLosses[0:rsi.DefaultPeriods])
+	avgGain := avg(avgGains[0:rsi.DefaultPeriods])
+	avgLoss := avg(avgLosses[0:rsi.DefaultPeriods])
 
 	r, result := rsi.NewBig(0, rsi.BigInput{
 		AverageGain: big.NewFloat(avgGain),
@@ -117,9 +107,9 @@ func TestBigRSI_Calculate(t *testing.T) {
 		t.FailNow()
 	}
 
-	for i := rsi.DefaultPeriods; i < len(avgGains); i++ {
-		avgGain, _ = avgGains[i].Float64()
-		avgLoss, _ = avgLosses[i].Float64()
+	for i := rsi.DefaultPeriods; i < len(bigAvgGains); i++ {
+		avgGain, _ = bigAvgGains[i].Float64()
+		avgLoss, _ = bigAvgLosses[i].Float64()
 		result = r.Calculate(rsi.BigInput{
 			AverageGain: big.NewFloat(avgGain),
 			AverageLoss: big.NewFloat(avgLoss),
@@ -132,8 +122,6 @@ func TestBigRSI_Calculate(t *testing.T) {
 }
 
 func TestRSI_Calculate(t *testing.T) {
-	avgGains, avgLosses, results := testData()
-
 	avgGain := avg(avgGains[0:rsi.DefaultPeriods])
 	avgLoss := avg(avgLosses[0:rsi.DefaultPeriods])
 
@@ -175,7 +163,7 @@ func floatToBig(s []float64) (b []*big.Float) {
 	return b
 }
 
-func testData() (avgGains, avgLosses, results []float64) {
+var (
 	avgGains = []float64{
 		-0.6046602879796196,
 		0,
@@ -469,5 +457,6 @@ func testData() (avgGains, avgLosses, results []float64) {
 		137.52227459653716,
 		271.6187142609139,
 	}
-	return avgGains, avgLosses, results
-}
+	bigAvgGains  = floatToBig(avgGains)
+	bigAvgLosses = floatToBig(avgLosses)
+)
