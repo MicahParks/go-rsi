@@ -39,7 +39,7 @@ r, result := rsi.New(uint(periods), initialInput)
 ```
 
 ## Step 3
-Use the remaining data per period to calculate the RSI value at that period.
+Use the remaining data per period to calculate the RSI result at that period.
 ```go
 // Use the remaining data to generate the RSI for each period.
 for i := periods; i < len(avgGains); i++ {

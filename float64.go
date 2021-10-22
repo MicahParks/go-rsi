@@ -16,7 +16,7 @@ type RSI struct {
 	previous        Input
 }
 
-// New creates a new RSI data structure and returns the initial value.
+// New creates a new RSI data structure and returns the initial result.
 func New(periods uint, initial Input) (r *RSI, result float64) {
 	if periods == 0 {
 		periods = DefaultPeriods
@@ -33,7 +33,7 @@ func New(periods uint, initial Input) (r *RSI, result float64) {
 	return r, result
 }
 
-// Calculate produces the next RSI value given the next input.
+// Calculate produces the next RSI result given the next input.
 func (r *RSI) Calculate(next Input) (result float64) {
 	r.previous.AverageGain = (r.previous.AverageGain*(r.periodsMinusOne) + next.AverageGain) / r.periods
 	r.previous.AverageLoss = (r.previous.AverageLoss*(r.periodsMinusOne) + next.AverageLoss) / r.periods
