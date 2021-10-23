@@ -13,7 +13,7 @@ func main() {
 
 	// Gather some data.
 	//
-	// For production systems, it'd be best to gather test data asynchronously.
+	// For production systems, it'd be best to gather data asynchronously.
 	avgGains, avgLosses, _ := testData()
 
 	// Determine the number of periods for the initial inputs. Defaults to 14.
