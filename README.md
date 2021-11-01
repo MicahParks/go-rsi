@@ -68,3 +68,8 @@ BenchmarkRSI_Calculate-6        1000000000               0.0000007 ns/op
 PASS
 ok      github.com/MicahParks/go-rsi    0.006s
 ```
+
+# Resources
+I built and tested this package using these resources:
+* [Investopedia](https://www.investopedia.com/terms/r/rsi.asp)
+* [Invest Excel](https://investexcel.net/relative-strength-index-spreadsheet/)
