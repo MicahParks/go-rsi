@@ -22,7 +22,7 @@ func BenchmarkBigRSI_Calculate(b *testing.B) {
 func BenchmarkRSI_Calculate(b *testing.B) {
 	const initialLength = rsi.DefaultPeriods + 1
 
-	r, _ := rsi.New(prices[0:initialLength])
+	r, _ := rsi.New(prices[:initialLength])
 
 	for _, next := range prices[initialLength:] {
 		r.Calculate(next)
@@ -37,7 +37,7 @@ func ExampleRSI_Calculate() {
 	//
 	// The slice argument should be the number of periods
 	const initialLength = rsi.DefaultPeriods + 1
-	r, result := rsi.New(prices[0:initialLength])
+	r, result := rsi.New(prices[:initialLength])
 	logger.Printf("Period index: %d\nFirst RSI result: %.8f", rsi.DefaultPeriods, result)
 
 	// Use the remaining data to generate the RSI for each period.
@@ -70,7 +70,7 @@ func TestBigRSI_Calculate(t *testing.T) {
 func TestRSI_Calculate(t *testing.T) {
 	const initialLength = rsi.DefaultPeriods + 1
 
-	r, result := rsi.New(prices[0:initialLength])
+	r, result := rsi.New(prices[:initialLength])
 	if result != results[0] {
 		t.FailNow()
 	}

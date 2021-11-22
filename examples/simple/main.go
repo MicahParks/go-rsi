@@ -15,11 +15,13 @@ func main() {
 	//
 	// The slice argument should be the number of periods
 	const initialLength = rsi.DefaultPeriods + 1
-	r, result := rsi.New(prices[0:initialLength])
+	initial := prices[:initialLength]
+	r, result := rsi.New(initial)
 	logger.Printf("Period index: %d\nRSI result: %.8f", rsi.DefaultPeriods, result)
 
 	// Use the remaining data to generate the RSI for each period.
-	for i, next := range prices[initialLength:] {
+	remaining := prices[initialLength:]
+	for i, next := range remaining {
 		result = r.Calculate(next)
 		logger.Printf("Period index: %d\nRSI result: %.8f", i+initialLength, result)
 	}
