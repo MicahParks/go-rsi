@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/MicahParks/go-rsi"
+	"github.com/MicahParks/go-rsi/v2"
 )
 
 func BenchmarkBigRSI_Calculate(b *testing.B) {

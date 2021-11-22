@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/MicahParks/go-rsi"
+	"github.com/MicahParks/go-rsi/v2"
 )
 
 func main() {

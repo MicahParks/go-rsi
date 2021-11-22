@@ -1,4 +1,4 @@
-[![Go Reference](https://pkg.go.dev/badge/github.com/MicahParks/go-rsi.svg)](https://pkg.go.dev/github.com/MicahParks/go-rsi) [![Go Report Card](https://goreportcard.com/badge/github.com/MicahParks/go-rsi)](https://goreportcard.com/report/github.com/MicahParks/go-rsi)
+[![Go Reference](https://pkg.go.dev/badge/github.com/MicahParks/go-rsi/v2.svg)](https://pkg.go.dev/github.com/MicahParks/go-rsi/v2) [![Go Report Card](https://goreportcard.com/badge/github.com/MicahParks/go-rsi/v2)](https://goreportcard.com/report/github.com/MicahParks/go-rsi/v2)
 # go-rsi
 The Relative Strength Index (RSI) technical analysis algorithm implemented in Golang.
 
@@ -36,12 +36,12 @@ There is 100% test coverage and benchmarks for this project. Here is an example 
 $ go test -bench .
 goos: linux
 goarch: amd64
-pkg: github.com/MicahParks/go-rsi
+pkg: github.com/MicahParks/go-rsi/v2
 cpu: Intel(R) Core(TM) i5-9600K CPU @ 3.70GHz
 BenchmarkBigRSI_Calculate-6     1000000000               0.0001744 ns/op
 BenchmarkRSI_Calculate-6        1000000000               0.0000017 ns/op
 PASS
-ok      github.com/MicahParks/go-rsi    0.005s
+ok      github.com/MicahParks/go-rsi/v2    0.005s
 ```
 
 # Resources
