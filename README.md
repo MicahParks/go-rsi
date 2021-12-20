@@ -2,7 +2,7 @@
 # go-rsi
 The Relative Strength Index (RSI) technical analysis algorithm implemented in Golang.
 
-```
+```go
 import "github.com/MicahParks/go-rsi/v2"
 ```
 
