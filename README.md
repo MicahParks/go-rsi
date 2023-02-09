@@ -48,6 +48,14 @@ PASS
 ok      github.com/MicahParks/go-rsi/v2    0.005s
 ```
 
+# Other Technical Algorithms
+Looking for some other technical analysis algorithms? Here are some other ones I've implemented:
+* Accumulation/Distribution (A/D): [go-ad](https://github.com/MicahParks/go-ad)
+* Chaikin: [go-chaikin](https://github.com/MicahParks/go-chaikin)
+* Moving Average Convergence Divergence (MACD), Exponential Moving Average (EMA), Simple Moving Average (SMA):
+  [go-ma](https://github.com/MicahParks/go-ma)
+* Relative Strength Index (RSI): [go-rsi](https://github.com/MicahParks/go-rsi)
+
 # Resources
 I built and tested this package using these resources:
 * [Investopedia](https://www.investopedia.com/terms/r/rsi.asp)
