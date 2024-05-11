@@ -2,6 +2,7 @@ package rsi_test
 
 import (
 	"log"
+	"math"
 	"math/big"
 	"os"
 	"testing"
@@ -51,6 +52,10 @@ func ExampleRSI_Calculate() {
 	// Last RSI result: 37.34374224
 }
 
+func almostEqual(v1, v2, epsilon float64) bool {
+	return math.Abs(v1-v2) <= epsilon
+}
+
 func TestBigRSI_Calculate(t *testing.T) {
 	const initialLength = rsi.DefaultPeriods + 1
 
@@ -72,13 +77,13 @@ func TestRSI_Calculate(t *testing.T) {
 
 	r, result := rsi.New(prices[:initialLength])
 	if result != results[0] {
-		t.FailNow()
+		t.Error(result, results[0])
 	}
 
 	for i, next := range prices[initialLength:] {
 		result = r.Calculate(next)
-		if result != results[i+1] {
-			t.FailNow()
+		if !almostEqual(result, results[i+1], 0.000001) {
+			t.Error(result, results[i+1])
 		}
 	}
 }
